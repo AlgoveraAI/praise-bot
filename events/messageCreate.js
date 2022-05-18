@@ -8,10 +8,6 @@ module.exports = {
         var {Client} =require("@notionhq/client");
         const notion = new Client({ auth: NOTION_KEY })
         async function addItem(giver, receiver, note) {
-            const note_with_user = message.content.replace('!praise', '')
-            note = note_with_user.replace(/ *\<[^)]*\> */g, '')
-            giver = message.author.username
-            receiver = message.mentions.users.first().username;
             try {
                 const response = await notion.pages.create({
                 parent: { database_id: NOTION_DATABASE_ID },
@@ -53,7 +49,9 @@ module.exports = {
         }
 
         if (message.content.substring(0, 7) === '!praise') {
-        addItem(message.author, message.mentions.users.first().username, message.content.replace('!praise', ''))
+        const note_with_user = message.content.replace('!praise', '')
+        const note = note_with_user.replace(/ *\<[^)]*\> */g, '')
+        addItem(message.author.username, message.mentions.users.first().username, note)
 
 	    }
     }
