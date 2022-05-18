@@ -1,14 +1,24 @@
 // Require the necessary discord.js classes
+require('dotenv').config()
 const { Client, Intents } = require('discord.js');
-const { token } = require('./config.json');
+const { token } = process.env.DISCORD_TOKEN;
+const fs = require('node:fs');
+const path = require('node:path');
 
-// Create a new client instance
-const client = new Client({ intents: [Intents.FLAGS.GUILDS] });
 
-// When the client is ready, run this code (only once)
-client.once('ready', () => {
-	console.log('Ready!');
-});
+const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES] });
 
-// Login to Discord with your client's token
+const eventsPath = path.join(__dirname, 'events');
+const eventFiles = fs.readdirSync(eventsPath).filter(file => file.endsWith('.js'));
+
+for (const file of eventFiles) {
+	const filePath = path.join(eventsPath, file);
+	const event = require(filePath);
+	if (event.once) {
+		client.once(event.name, (...args) => event.execute(...args));
+	} else {
+		client.on(event.name, (...args) => event.execute(...args));
+	}
+}
+
 client.login(token);
