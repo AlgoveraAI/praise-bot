@@ -5,7 +5,7 @@ module.exports = {
 	async execute(message) {
         const { MessageActionRow, MessageSelectMenu} = require('discord.js');
         const NOTION_KEY=process.env.NOTION_KEY;
-        const NOTION_DATABASE_ID=process.env.NOTION_DATABASE_ID;
+        const NOTION_DATABASE_ID=process.env.NOTION_PRAISE_DATABASE_ID;
         var {Client} =require("@notionhq/client");
         const notion = new Client({ auth: NOTION_KEY })
         const row = new MessageActionRow()

@@ -10,10 +10,10 @@ module.exports = {
 			.setDescription('Praise is logged in the public database above.');
         const { Client } = require('@notionhq/client');
         const notion = new Client({ auth: process.env.NOTION_KEY }); 
-        const NOTION_DATABASE_ID=process.env.NOTION_DATABASE_ID;
+        const NOTION_DATABASE_ID=process.env.NOTION_PRAISE_DATABASE_ID;
         if (!interaction.isSelectMenu()) return;
             if (interaction.customId === 'select') {
-                await interaction.update({content: `Great! You've labeld the praise in the ${interaction.values} category!`, embeds: [embed], components: []})
+                await interaction.update({content: `Great! You've labeled the praise in the ${interaction.values} category!`, embeds: [embed], components: []})
             }
     }
 }
