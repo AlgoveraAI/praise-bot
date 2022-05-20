@@ -7,7 +7,7 @@ module.exports = {
         const NOTION_DATABASE_ID=process.env.NOTION_DATABASE_ID;
         var {Client} =require("@notionhq/client");
         const notion = new Client({ auth: NOTION_KEY })
-        async function addItem(giver, receiver, note) {
+        async function addItem(message, giver, receiver, note, channel) {
             try {
                 const response = await notion.pages.create({
                 parent: { database_id: NOTION_DATABASE_ID },
@@ -38,6 +38,16 @@ module.exports = {
                                 }   
                             }  
                         ]   
+                    },
+                    
+                    Channel: { 
+                        rich_text:[
+                                {
+                            "text": {
+                                "content": channel
+                                }   
+                            }  
+                        ]   
                     }
                 },
                 })
@@ -45,14 +55,14 @@ module.exports = {
                 console.log("Success! Entry added.")
             } catch (error) {
                 console.error(error.body)
-            }
+            };
         }
 
         if (message.content.substring(0, 7) === '!praise') {
         const note_with_user = message.content.replace('!praise', '')
         const note = note_with_user.replace(/ *\<[^)]*\> */g, '')
-        addItem(message.author.username, message.mentions.users.first().username, note)
-
+        addItem(message, message.author.username, message.mentions.users.first().username, note, message.channel.name);
+        message.react('✅');
 	    }
     }
 };
