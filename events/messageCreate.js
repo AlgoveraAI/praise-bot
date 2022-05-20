@@ -3,11 +3,36 @@ module.exports = {
 	name: 'messageCreate',
     once: false,
 	async execute(message) {
+        const { MessageActionRow, MessageSelectMenu} = require('discord.js');
         const NOTION_KEY=process.env.NOTION_KEY;
         const NOTION_DATABASE_ID=process.env.NOTION_DATABASE_ID;
         var {Client} =require("@notionhq/client");
         const notion = new Client({ auth: NOTION_KEY })
-        async function addItem(message, giver, receiver, note, channel) {
+        const row = new MessageActionRow()
+        .addComponents(
+            new MessageSelectMenu()
+                .setCustomId('select')
+                .setPlaceholder('Select Praise Category')
+                .addOptions([
+                    {
+                        label: 'Community',
+                        description: 'praise for engaging in the community',
+                        value: 'Community',
+                    },
+                    {
+                        label: 'Technical',
+                        description: 'technical contributions',
+                        value: 'Technical',
+                    },
+                    {
+                        label: 'Other',
+                        description: 'any other kind of praise!',
+                        value: 'Other',
+                    },
+                ]),
+        );
+
+        async function addItem(giver, receiver, note, channel) {
             try {
                 const response = await notion.pages.create({
                 parent: { database_id: NOTION_DATABASE_ID },
@@ -59,10 +84,12 @@ module.exports = {
         }
 
         if (message.content.substring(0, 7) === '!praise') {
-        const note_with_user = message.content.replace('!praise', '')
-        const note = note_with_user.replace(/ *\<[^)]*\> */g, '')
-        addItem(message, message.author.username, message.mentions.users.first().username, note, message.channel.name);
+        const note_with_user = message.content.replace('!praise', '');
+        const note = note_with_user.replace(/ *\<[^)]*\> */g, '');
+        message.reply({content: `Thanks for praising ${message.mentions.users.first()}! Please select a category for the praise:`, components: [row]});
+        addItem(message.author.username, message.mentions.users.first().username, note, message.channel.name);
         message.react('✅');
 	    }
+
     }
 };

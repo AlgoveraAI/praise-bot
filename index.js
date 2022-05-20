@@ -5,7 +5,6 @@ const { token } = process.env.DISCORD_TOKEN;
 const fs = require('node:fs');
 const path = require('node:path');
 
-
 const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES] });
 
 const eventsPath = path.join(__dirname, 'events');
