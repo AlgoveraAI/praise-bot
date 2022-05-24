@@ -6,7 +6,7 @@ module.exports = {
         const embed = new MessageEmbed()
 			.setColor('#0099ff')
 			.setTitle('You can see your praise here')
-			.setURL('https://algovera.notion.site/4ea600f2320e4ea2a564ae78c506c97d?v=824fb5c693c94f6a8a24dd29431aaa43')
+			.setURL('https://algovera.notion.site/95a4ca09cd89409ba56ec47dcddbd887?v=5aa1087c1c574c5e82b097c9ee90586c')
 			.setDescription('Praise is logged in the public database above.');
         const { Client } = require('@notionhq/client');
         const notion = new Client({ auth: process.env.NOTION_KEY }); 
