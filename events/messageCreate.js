@@ -76,8 +76,9 @@ module.exports = {
                     }
                 },
                 })
-                console.log(response)
+                console.log(response.id)
                 console.log("Success! Entry added.")
+                return response.id;
             } catch (error) {
                 console.error(error.body)
             };
