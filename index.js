@@ -10,7 +10,7 @@ const notion = new NotionClient({ auth: NOTION_KEY })
 const { token } = process.env.DISCORD_TOKEN;
 const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES] });
 
-const serviceAccount = require("/Users/keatonkirkpatrick/Desktop/API_KEY/replabs_service_account_key_algovera.json");
+const serviceAccount = JSON.parse(process.env.FIREBASE_KEY);
 
 admin.initializeApp({
 	credential: admin.credential.cert(serviceAccount)
