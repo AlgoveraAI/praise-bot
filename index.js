@@ -1,6 +1,6 @@
 // Require the necessary discord.js classes
 require('dotenv').config()
-const { Client, Intents } = require('discord.js');
+const { Client, Intents, Util } = require('discord.js');
 const {Client: NotionClient} =require("@notionhq/client");
 const admin = require("firebase-admin");
 
@@ -64,6 +64,7 @@ async function addItem(giver, receiver, note, discord_channel) {
 		})
 		console.log(response.id)
 		console.log("Success! Entry added.")
+		console.log(note)
 		page_id = response.id;
 		from = giver;
 		to = receiver;
@@ -132,9 +133,10 @@ client.on('messageCreate', (message) => {
 
 	if (message.content.substring(0, 7) === '!praise') {
 	const note_with_user = message.content.replace('!praise', '');
-	const note = note_with_user.replace(/ *\<[^)]*\> */g, '');
+	const note_with_channel = note_with_user.replace(/ *\<[^#]*\> */g, '');
+	const clean_note = Util.cleanContent(note_with_channel, message.channel);
 	message.reply({content: `Thanks for praising ${message.mentions.users.first()}! Please select a category for the praise:`, components: [row]});
-	addItem(message.author.username, message.mentions.users.first().username, note, message.channel.name);
+	addItem(message.author.username, message.mentions.users.first().username, clean_note, message.channel.name);
 	message.react('✅');
 	
 	}
